@@ -1,17 +1,4 @@
-#include <iostream>
-using namespace std;
-
-template <typename T>
-class Node {
-public:
-    T dato;
-    Node* abajo;
-
-    Node(T dato) {
-        this->dato = dato;
-        this->abajo = nullptr;
-    }
-};
+#include "stack.hpp"
 template <typename T>
 class Stack {
     public:
@@ -44,17 +31,3 @@ class Stack {
         return head->dato;
     }
 };
-int main(){
-    Stack<int> s;
-    s.push(1);
-    s.push(2);
-    s.push(3);
-    cout << s.top() << endl;
-    s.pop();
-    cout << s.top() << endl;
-    s.pop();
-    cout << s.top() << endl;
-    s.pop();
-    cout << s.isEmpty() << endl;
-    return 0;
-}
