@@ -45,6 +45,9 @@ int Stack<T>::getSize() {
 
 template <class T>
 void Stack<T>::push(T data) {
+    if (isFull()) {
+        throw std::runtime_error("ERROR: Stack Overflow");
+    }
     Node<T>* newNode = new Node<T>(data);
     newNode->setNext(top);
     top = newNode;
