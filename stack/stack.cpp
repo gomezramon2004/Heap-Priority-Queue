@@ -3,10 +3,10 @@
 // Implementation of Node Methods
 
 template <class T>
-Node<T>::Node(T data) : data(data), next(nullptr) {}
+Node<T>::Node(T data) : data(data), next(nullptr) {}        // Constructor
 
 template <class T>
-T Node<T>::getData() {
+T Node<T>::getData() {                                      // Getters and Setters
     return data;
 }
 
@@ -28,10 +28,10 @@ void Node<T>::setNext(Node<T>* next) {
 
 // Implementation of Stack Methods
 template <class T>
-Stack<T>::Stack(int MAX_SIZE) : size(0), MAX_SIZE(MAX_SIZE), top(nullptr) {}
+Stack<T>::Stack(int MAX_SIZE) : size(0), MAX_SIZE(MAX_SIZE), top(nullptr) {}    // Constructor
 
 template <class T>
-void Stack<T>::push(T data) {
+void Stack<T>::push(T data) {                                                   // Pushing to stack  
     if (isFull()) {
         throw std::runtime_error("ERROR: Stack Overflow");
     }
@@ -42,7 +42,7 @@ void Stack<T>::push(T data) {
 }
 
 template <class T>
-void Stack<T>::pop() {
+void Stack<T>::pop() {                                                          // Popping from stack         
     if (isEmpty()) {
         throw std::runtime_error("ERROR: Stack is empty");
     }
@@ -53,7 +53,7 @@ void Stack<T>::pop() {
 }
 
 template <class T>
-T Stack<T>::peek() {
+T Stack<T>::peek() {                                                            // Peeking at top of stack
     if (!top) {
         throw std::runtime_error("ERROR: Stack is empty");
     }
@@ -61,22 +61,22 @@ T Stack<T>::peek() {
 }
 
 template <class T>
-int Stack<T>::getSize() {
+int Stack<T>::getSize() {                                                       // Get size of stack            
     return size;
 }
 
 template <class T>
-bool Stack<T>::isEmpty() {
+bool Stack<T>::isEmpty() {                                                      // Check if stack is empty            
     return top == nullptr;
 }
 
-template <class T>
+template <class T>                                                              // Check if stack is full     
 bool Stack<T>::isFull() {
     return size == MAX_SIZE;
 }
 
 template <class T>
-Stack<T>::~Stack() {
+Stack<T>::~Stack() {                                                            // Destructor 
     while (top) {
         Node<T>* temp = top;
         top = top->getNext();
