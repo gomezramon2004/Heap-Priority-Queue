@@ -1,33 +1,82 @@
 #include "stack.hpp"
-template <typename T>
-class Stack {
-    public:
-    Node<T>* head;
-    Stack() {
-        this->head = nullptr;
-    }
-    void push(T dato) {
-        Node<T>* nuevo = new Node<T>(dato);
-        if (head == nullptr) {
-            head = nuevo;
-        } else {
-            nuevo->abajo = head;// Nuevo apunta al nodo que está en la cima
-            head = nuevo;// La cima de la pila es el nuevo nodo
-        }
-    }
-    void pop() {
-        if (head == nullptr) {
-            return;
-        }
 
-        head = head->abajo; // Mover la cima de la pila al siguiente nodo
+// Implementation of Node Methods
 
+template <class T>
+Node<T>::Node(T data) : data(data), next(nullptr) {}
+
+template <class T>
+T Node<T>::getData() {
+    return data;
+}
+
+template <class T>
+Node<T>* Node<T>::getNext() {
+    return next;
+}
+
+template <class T>
+void Node<T>::setData(T data) {
+    this->data = data;
+}
+
+template <class T>
+void Node<T>::setNext(Node<T>* next) {
+    this->next = next;
+}
+
+
+// Implementation of Stack Methods
+template <class T>
+Stack<T>::Stack(int MAX_SIZE) : size(0), MAX_SIZE(MAX_SIZE), top(nullptr) {}
+
+template <class T>
+T Stack<T>::getTop() {
+    if (!top) {
+        throw std::runtime_error("ERROR: Stack is empty");
     }
-    bool isEmpty(){
-        return head == nullptr;
+    return top->getData();
+}
+
+template <class T>
+int Stack<T>::getSize() {
+    return size;
+}
+
+template <class T>
+void Stack<T>::push(T data) {
+    Node<T>* newNode = new Node<T>(data);
+    newNode->setNext(top);
+    top = newNode;
+    size++;
+}
+
+template <class T>
+void Stack<T>::pop() {
+    if (isEmpty()) {
+        throw std::runtime_error("ERROR: Stack is empty");
     }
-    T top(){
-        
-        return head->dato;
+    Node<T>* temp = top;
+    top = top->getNext();
+    delete temp;
+    size--;
+}
+
+template <class T>
+bool Stack<T>::isEmpty() {
+    return top == nullptr;
+}
+
+template <class T>
+bool Stack<T>::isFull() {
+    return size == MAX_SIZE;
+}
+
+template <class T>
+Stack<T>::~Stack() {
+    while (top) {
+        Node<T>* temp = top;
+        top = top->getNext();
+        delete temp;
     }
-};
+}
