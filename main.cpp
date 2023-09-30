@@ -11,7 +11,7 @@ int main() {
         }
 
         while (!stackList.isEmpty()) {
-            std::cout << "Top: " << stackList.getTop() << '\n';
+            std::cout << "Top: " << stackList.peek() << '\n';
             stackList.pop();
         }
     } catch (const std::runtime_error &e) {

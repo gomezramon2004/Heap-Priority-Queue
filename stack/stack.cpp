@@ -31,16 +31,16 @@ template <class T>
 Stack<T>::Stack(int MAX_SIZE) : size(0), MAX_SIZE(MAX_SIZE), top(nullptr) {}
 
 template <class T>
-T Stack<T>::getTop() {
+int Stack<T>::getSize() {
+    return size;
+}
+
+template <class T>
+T Stack<T>::peek() {
     if (!top) {
         throw std::runtime_error("ERROR: Stack is empty");
     }
     return top->getData();
-}
-
-template <class T>
-int Stack<T>::getSize() {
-    return size;
 }
 
 template <class T>

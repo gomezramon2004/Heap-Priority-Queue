@@ -22,8 +22,8 @@ class Stack {
         Node<T>* top;
     public:
         Stack(int MAX_SIZE);
-        T getTop();
         int getSize();
+        T peek();           // Top Function
         void push(T data);  // Create
         void pop();         // Delete
         bool isEmpty();
