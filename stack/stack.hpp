@@ -22,10 +22,10 @@ class Stack {
         Node<T>* top;
     public:
         Stack(int MAX_SIZE);
-        int getSize();
-        T peek();           // Top Function
         void push(T data);  // Create
         void pop();         // Delete
+        T peek();           // Top Function
+        int getSize();
         bool isEmpty();
         bool isFull();
         ~Stack();

@@ -31,19 +31,6 @@ template <class T>
 Stack<T>::Stack(int MAX_SIZE) : size(0), MAX_SIZE(MAX_SIZE), top(nullptr) {}
 
 template <class T>
-int Stack<T>::getSize() {
-    return size;
-}
-
-template <class T>
-T Stack<T>::peek() {
-    if (!top) {
-        throw std::runtime_error("ERROR: Stack is empty");
-    }
-    return top->getData();
-}
-
-template <class T>
 void Stack<T>::push(T data) {
     if (isFull()) {
         throw std::runtime_error("ERROR: Stack Overflow");
@@ -63,6 +50,19 @@ void Stack<T>::pop() {
     top = top->getNext();
     delete temp;
     size--;
+}
+
+template <class T>
+T Stack<T>::peek() {
+    if (!top) {
+        throw std::runtime_error("ERROR: Stack is empty");
+    }
+    return top->getData();
+}
+
+template <class T>
+int Stack<T>::getSize() {
+    return size;
 }
 
 template <class T>
