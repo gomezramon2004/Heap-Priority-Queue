@@ -1,10 +1,10 @@
 CXX = g++
 CXXFLAGS = -Wall -std=c++17
 TARGET = main
-STKDIR = stack
+QEUDIR = queue
 
 SRCS = main.cpp \
-		$(STKDIR)/stack.cpp
+		$(QEUDIR)/queue.cpp
 
 EXECUTABLE = a.out
 
