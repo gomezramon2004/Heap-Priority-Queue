@@ -1,4 +1,4 @@
-#include "Queue.hpp"
+#include "queue.hpp"
 
 // Implementation of priorityQueue Methods
 
@@ -20,10 +20,10 @@ void priorityQueue::heapifyUp(int index) {
 // Heapify down
 void priorityQueue::heapifyDown(int index) {                                                  
     int left = 2 * index + 1, right = 2 * index + 2, smallest = index;
-    if (left < currentLength && arr[left] < arr[index]) {
+    if (left < currentLength && arr[left] > arr[index]) {
         smallest = left;
     }
-    if (right < currentLength && arr[right] < arr[smallest]) {
+    if (right < currentLength && arr[right] > arr[smallest]) {
         smallest = right;
     }
     if (smallest != index) {
@@ -38,7 +38,10 @@ priorityQueue::priorityQueue(int MAX_LENGTH) : currentLength(0), MAX_LENGTH(MAX_
 }   
 
 // Pushing to priorityQueue
-void priorityQueue::push(int data) {                                                 
+void priorityQueue::push(int data) {      
+    if (full()) {
+        throw std::runtime_error("ERROR: Priority Queue is full");
+    }                                           
     arr[currentLength] = data;
     heapifyUp(currentLength);
     ++currentLength;
@@ -64,7 +67,11 @@ int priorityQueue::top() {
 
 // Check if priorityQueue is empty 
 bool priorityQueue::empty() {                                                                  
-    return currentLength;
+    return !currentLength;
+}
+
+bool priorityQueue::full() {
+    return currentLength == MAX_LENGTH;
 }
 
 // Get size of priorityQueue

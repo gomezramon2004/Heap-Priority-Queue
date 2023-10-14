@@ -15,5 +15,6 @@ class priorityQueue {
         void pop();
         int top(); 
         bool empty();
+        bool full();
         int size();
 };
