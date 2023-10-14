@@ -13,6 +13,7 @@ class Queue {
         int length;
         Node* front;
         Node* rear;
+        void swap();
     public:
         Queue();
         void push(int data);
