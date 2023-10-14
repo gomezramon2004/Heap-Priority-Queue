@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 
+// In this version of the priority queue, I'll use nodes as a container for the dat
+
 int main() {
     try {
         priorityQueue pq(10);
