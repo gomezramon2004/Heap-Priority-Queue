@@ -3,7 +3,8 @@
 class Node {
     public:
         int data;
-        Node *next;
+        Node *left;
+        Node *right
         Node *prev;
         Node(int data);
 };

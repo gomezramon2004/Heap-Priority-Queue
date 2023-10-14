@@ -3,7 +3,7 @@
 
 // Implementation of queue Methods
 
-Node::Node(int data) : data(data), next(nullptr), prev(nullptr) {}
+Node::Node(int data) : data(data), left(nullptr), right(nullptr), prev(nullptr) {}
 
 
 // Implementation of priorityQueue Methods
@@ -48,9 +48,18 @@ void priorityQueue::push(int data) {
     if (empty()) {
         front = rear = newNode;
     } else {
-        rear->next = newNode;
-        newNode->prev = rear;
-        rear = newNode;
+
+        if (!front->left) {
+            front->left = newNode;
+            newNode->prev = rear;
+            rear = newNode;
+        } else if (!front->right) {
+            front->right = newNode;
+            newNode->prev = rear->prev;
+            rear = newNode;
+        } else {
+
+        }
         heapifyUp(rear);
     }
     ++currentLength;
