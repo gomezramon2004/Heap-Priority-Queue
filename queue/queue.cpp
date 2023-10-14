@@ -1,126 +1,81 @@
 #include "queue.hpp"
 #include <algorithm> 
 
-// Constructor of Node
-Node::Node(int data) : data(data), next(nullptr) {}
+// Implementation of priorityQueue Methods
 
-// Implementation of Queue Methods
+// Swap
+void priorityQueue::swap(int &a, int &b) {                                                  
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+// Heapify up
+void priorityQueue::heapifyUp(int index) {                                                  
+    if (index && arr[index] > arr[(index - 1) / 2]) {
+        swap(arr[index], arr[(index - 1) / 2]);
+        heapifyUp((index - 1) / 2);
+    }
+}
+
+// Heapify down
+void priorityQueue::heapifyDown(int index) {                                                  
+    int left = 2 * index + 1, right = 2 * index + 2, smallest = index;
+    if (left < currentLength && arr[left] > arr[index]) {
+        smallest = left;
+    }
+    if (right < currentLength && arr[right] > arr[smallest]) {
+        smallest = right;
+    }
+    if (smallest != index) {
+        swap(arr[index], arr[smallest]);
+        heapifyDown(smallest);
+    }
+}
 
 // Constructor
-Queue::Queue() : length(0), front(nullptr), rear(nullptr) {}
+priorityQueue::priorityQueue(int MAX_LENGTH) : currentLength(0), MAX_LENGTH(MAX_LENGTH) {
+    arr.resize(MAX_LENGTH);
+}   
 
-// Pushing to Queue
-void Queue::push(int data) {
-    Node* newNode = new Node(data);
+// Pushing to priorityQueue
+void priorityQueue::push(int data) {      
+    if (full()) {
+        throw std::runtime_error("ERROR: Priority Queue is full");
+    }                                           
+    arr[currentLength] = data;
+    heapifyUp(currentLength);
+    ++currentLength;
+}
+
+// Popping from priorityQueue
+void priorityQueue::pop() {                                                                  
     if (empty()) {
-        front = rear = newNode;
-    } else {
-        rear->next = newNode;
-        rear = newNode;
-
-        // Perform "sift-up" to maintain the heap property.
-        Node* current = rear;
-        while (current != front) {
-            Node* parent = nullptr;
-            Node* tmp = front;
-
-            // Find the parent of the current node.
-            while (tmp) {
-                if (tmp->next == current) {
-                    parent = tmp;
-                    break;
-                }
-                tmp = tmp->next;
-            }
-
-            if (parent && parent->data > current->data) {
-                std::swap(parent->data, current->data);
-                current = parent;
-            } else {
-                break;  // The heap property is maintained.
-            }
-        }
+        throw std::runtime_error("ERROR: Priority Queue is empty");
     }
-    ++length;
+   swap(arr[0], arr[currentLength]);
+    heapifyDown(0);
+    --currentLength;
 }
 
-// Popping from Queue
-void Queue::pop() {
-    if (empty()) {
-        throw std::runtime_error("ERROR: Queue is empty");
+// Peeking at top of priorityQueue
+int priorityQueue::top() {                                                          
+    if (empty()) { 
+        throw std::runtime_error("ERROR: Priority Queue is empty");
     }
-
-    // If there's only one element in the queue, remove it.
-    if (length == 1) {
-        delete front;
-        front = rear = nullptr;
-        length = 0;
-        return;
-    }
-
-    // Swap the first and last nodes.
-    std::swap(front->data, rear->data);
-
-    // Remove the last node.
-    Node* current = front;
-    while (current->next != rear) {
-        current = current->next;
-    }
-
-    delete rear;
-    rear = current;
-    rear->next = nullptr;
-
-    // Perform "sift-down" to maintain the heap property.
-    current = front;
-    while (current) {
-        Node* leftChild = current->next;
-        Node* rightChild = leftChild ? leftChild->next : nullptr;
-        Node* smallest = current;
-
-        if (leftChild && leftChild->data < smallest->data) {
-            smallest = leftChild;
-        }
-
-        if (rightChild && rightChild->data < smallest->data) {
-            smallest = rightChild;
-        }
-
-        if (smallest != current) {
-            std::swap(current->data, smallest->data);
-            current = smallest;
-        } else {
-            break;  // The heap property is maintained.
-        }
-    }
-
-    --length;
+    return arr[0];
 }
 
-// Peeking at top of Queue
-int Queue::top() {
-    if (empty()) {
-        throw std::runtime_error("ERROR: Queue is empty");
-    }
-    return front->data;
+// Check if priorityQueue is empty 
+bool priorityQueue::empty() {                                                                  
+    return !currentLength;
 }
 
-// Check if Queue is empty
-bool Queue::empty() {
-    return !front;
+bool priorityQueue::full() {
+    return currentLength == MAX_LENGTH;
 }
 
-// Get size of Queue
-int Queue::size() {
-    return length;
-}
-
-// Destructor
-Queue::~Queue() {
-    while (!empty()) {
-        Node* temp = front;
-        front = front->next;
-        delete temp;
-    }
-    length = 0;
+// Get size of priorityQueue
+int priorityQueue::size() {                                                                     
+    return currentLength;
 }

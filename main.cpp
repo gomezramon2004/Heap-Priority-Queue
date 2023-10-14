@@ -4,18 +4,17 @@
 
 int main() {
     try {
-        Queue testList;                         // Stack of integers
+        priorityQueue pq(10);
+        pq.push(5);
+        pq.push(10);
+        pq.push(15);
+        pq.push(20);
+        pq.push(4);
 
-        testList.push(2);
-        testList.push(4);
-        testList.push(6);
-        testList.push(1);
-        testList.push(8);
-
-        std::cout << "Front: " << testList.top() << '\n';
-        testList.pop();
-        std::cout << "Front: " << testList.top() << '\n';
-   
+        for (int i = 0; i < 5; ++i) {
+            std::cout << pq.top() << std::endl;
+            pq.pop();
+        }
     } catch (const std::runtime_error &e) {
         std::cerr << e.what() << std::endl;
     }
