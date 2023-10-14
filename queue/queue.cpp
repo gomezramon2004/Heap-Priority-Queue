@@ -1,17 +1,22 @@
 #include "queue.hpp"
 #include <algorithm> 
 
+// Implementation of queue Methods
+
+Node::Node(int data) : data(data), next(nullptr), prev(nullptr) {}
+
+
 // Implementation of priorityQueue Methods
 
 // Swap
-void priorityQueue::swap(int &a, int &b) {                                                  
-    int temp = a;
-    a = b;
-    b = temp;
+void priorityQueue::swap(Node* a, Node* b) {                                                  
+    int temp = a->data;
+    a->data = b->data;
+    b->data = temp;
 }
 
 // Heapify up
-void priorityQueue::heapifyUp(int index) {                                                  
+void priorityQueue::heapifyUp(Node* node) {                                                  
     if (index && arr[index] > arr[(index - 1) / 2]) {
         swap(arr[index], arr[(index - 1) / 2]);
         heapifyUp((index - 1) / 2);
@@ -19,7 +24,7 @@ void priorityQueue::heapifyUp(int index) {
 }
 
 // Heapify down
-void priorityQueue::heapifyDown(int index) {                                                  
+void priorityQueue::heapifyDown(Node* node) {                                                  
     int left = 2 * index + 1, right = 2 * index + 2, smallest = index;
     if (left < currentLength && arr[left] > arr[index]) {
         smallest = left;
@@ -34,17 +39,20 @@ void priorityQueue::heapifyDown(int index) {
 }
 
 // Constructor
-priorityQueue::priorityQueue(int MAX_LENGTH) : currentLength(0), MAX_LENGTH(MAX_LENGTH) {
-    arr.resize(MAX_LENGTH);
-}   
+priorityQueue::priorityQueue() : currentLength(0), front(nullptr), rear(nullptr) {}
 
 // Pushing to priorityQueue
-void priorityQueue::push(int data) {      
-    if (full()) {
-        throw std::runtime_error("ERROR: Priority Queue is full");
-    }                                           
-    arr[currentLength] = data;
-    heapifyUp(currentLength);
+void priorityQueue::push(int data) {                     
+    Node* newNode = new Node(data);                 
+    
+    if (empty()) {
+        front = rear = newNode;
+    } else {
+        rear->next = newNode;
+        newNode->prev = rear;
+        rear = newNode;
+        heapifyUp(rear);
+    }
     ++currentLength;
 }
 
@@ -53,8 +61,8 @@ void priorityQueue::pop() {
     if (empty()) {
         throw std::runtime_error("ERROR: Priority Queue is empty");
     }
-   swap(arr[0], arr[currentLength]);
-    heapifyDown(0);
+    swap(front, rear);
+    heapifyDown(front);
     --currentLength;
 }
 
@@ -63,16 +71,12 @@ int priorityQueue::top() {
     if (empty()) { 
         throw std::runtime_error("ERROR: Priority Queue is empty");
     }
-    return arr[0];
+    return front->data;
 }
 
 // Check if priorityQueue is empty 
 bool priorityQueue::empty() {                                                                  
-    return !currentLength;
-}
-
-bool priorityQueue::full() {
-    return currentLength == MAX_LENGTH;
+    return !front;
 }
 
 // Get size of priorityQueue

@@ -1,16 +1,23 @@
 #pragma once
-#include <vector>
+
+class Node {
+    public:
+        int data;
+        Node *next;
+        Node *prev;
+        Node(int data);
+};
 
 class priorityQueue {
     private:
         int currentLength;
-        int MAX_LENGTH;
-        std::vector<int> arr;
-        void swap(int &a, int &b);
-        void heapifyUp(int index);
-        void heapifyDown(int index);
+        Node* front;
+        Node* rear;
+        void swap(Node* a, Node* b);
+        void heapifyUp(Node* node);
+        void heapifyDown(Node* node);
     public:
-        priorityQueue(int MAX_LENGTH);
+        priorityQueue();
         void push(int data);
         void pop();
         int top(); 
