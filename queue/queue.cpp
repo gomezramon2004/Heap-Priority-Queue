@@ -1,61 +1,73 @@
-#include "queue.hpp"
+#include "Queue.hpp"
 
-// Constructor of Node
-Node::Node(int data) : data(data), next(nullptr) {}        
+// Implementation of priorityQueue Methods
 
+// Swap
+void priorityQueue::swap(int &a, int &b) {                                                  
+    int temp = a;
+    a = b;
+    b = temp;
+}
 
-// Implementation of Queue Methods
+// Heapify up
+void priorityQueue::heapifyUp(int index) {                                                  
+    if (index && arr[index] > arr[(index - 1) / 2]) {
+        swap(arr[index], arr[(index - 1) / 2]);
+        heapifyUp((index - 1) / 2);
+    }
+}
+
+// Heapify down
+void priorityQueue::heapifyDown(int index) {                                                  
+    int left = 2 * index + 1, right = 2 * index + 2, smallest = index;
+    if (left < currentLength && arr[left] < arr[index]) {
+        smallest = left;
+    }
+    if (right < currentLength && arr[right] < arr[smallest]) {
+        smallest = right;
+    }
+    if (smallest != index) {
+        swap(arr[index], arr[smallest]);
+        heapifyDown(smallest);
+    }
+}
 
 // Constructor
-Queue::Queue() : length(0), front(nullptr), rear(nullptr) {}                                
+priorityQueue::priorityQueue(int MAX_LENGTH) : currentLength(0), MAX_LENGTH(MAX_LENGTH) {
+    arr.resize(MAX_LENGTH);
+}   
 
-// Pushing to Queue
-void Queue::push(int data) {                                                 
-    Node* newNode = new Node(data);
-    if (empty()) {
-        front = rear = newNode;
-    } else {
-        rear->next = newNode;
-        rear = newNode;
-    }
-    ++length;
+// Pushing to priorityQueue
+void priorityQueue::push(int data) {                                                 
+    arr[currentLength] = data;
+    heapifyUp(currentLength);
+    ++currentLength;
 }
 
-// Popping from Queue
-void Queue::pop() {                                                                  
+// Popping from priorityQueue
+void priorityQueue::pop() {                                                                  
     if (empty()) {
-        throw std::runtime_error("ERROR: Queue is empty");
+        throw std::runtime_error("ERROR: Priority Queue is empty");
     }
-    Node* temp = front;
-    front = front->next;
-    delete temp;
-    --length;
+   swap(arr[0], arr[currentLength]);
+    heapifyDown(0);
+    --currentLength;
 }
 
-// Peeking at top of Queue
-int Queue::top() {                                                          
+// Peeking at top of priorityQueue
+int priorityQueue::top() {                                                          
     if (empty()) { 
-        throw std::runtime_error("ERROR: Queue is empty"); 
+        throw std::runtime_error("ERROR: Priority Queue is empty");
     }
-    return front->data;
+    return arr[0];
 }
 
-// Check if Queue is empty 
-bool Queue::empty() {                                                                  
-    return !front;
+// Check if priorityQueue is empty 
+bool priorityQueue::empty() {                                                                  
+    return currentLength;
 }
 
-// Get size of Queue
-int Queue::size() {                                                                     
-    return length;
-}
-
- // Destructor 
-Queue::~Queue() {                                                          
-    while (!empty()) {
-        Node* temp = front;
-        front = front->next;
-        delete temp;
-    }
-    length = 0;
+// Get size of priorityQueue
+int priorityQueue::size() {                                                                     
+    return currentLength;
 }
