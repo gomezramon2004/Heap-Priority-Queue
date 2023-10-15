@@ -53,6 +53,7 @@ void priorityQueue::pop() {
         throw std::runtime_error("ERROR: Priority Queue is empty");
     }
    swap(arr[0], arr[currentLength]);
+   arr.pop_back();
     heapifyDown(0);
     --currentLength;
 }
