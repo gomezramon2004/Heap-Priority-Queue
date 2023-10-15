@@ -6,7 +6,7 @@
 
 int main() {
     try {
-        priorityQueue pq(10);
+        priorityQueue pq;
         pq.push(5);
         pq.push(10);
         pq.push(15);

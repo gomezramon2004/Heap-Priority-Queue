@@ -1,5 +1,6 @@
 #include "queue.hpp"
 #include <algorithm> 
+#include <iostream>
 
 // Implementation of queue Methods
 
@@ -7,6 +8,36 @@ Node::Node(int data) : data(data), left(nullptr), right(nullptr), prev(nullptr) 
 
 
 // Implementation of priorityQueue Methods
+
+// Check current level
+void priorityQueue::upgradeCurrentLevel(int& currentLevel, int& currentLength) {                                                  
+    if (currentLength == (2 ^ currentLevel) - 2) ++currentLevel;
+}
+
+
+// Preorder
+void priorityQueue::searchByPreOrder(Node* node, Node* newNode, bool& flag, int& level) {  
+    if (flag || level == currentLevel) {
+        --level;
+        return;
+    }  
+
+    if (node->left && node->right) {
+        ++level;
+        searchByPreOrder(node->left, newNode, flag, level);
+        searchByPreOrder(node->right, newNode, flag, level);
+    } else if (!node->left) {
+        node->left = newNode;
+        newNode->prev = node;
+        rear = newNode;
+        flag = true;
+    } else if (!node->right) {
+        node->right = newNode;
+        newNode->prev = node;
+        rear = newNode;
+        flag = true;
+    }
+}
 
 // Swap
 void priorityQueue::swap(Node* a, Node* b) {                                                  
@@ -16,30 +47,20 @@ void priorityQueue::swap(Node* a, Node* b) {
 }
 
 // Heapify up
-void priorityQueue::heapifyUp(Node* node) {                                                  
-    if (index && arr[index] > arr[(index - 1) / 2]) {
-        swap(arr[index], arr[(index - 1) / 2]);
-        heapifyUp((index - 1) / 2);
+void priorityQueue::heapifyUp(Node* node) {  
+    if (node->prev && node->data > node->prev->data) {
+        swap(node, node->prev);
+        heapifyUp(node->prev);
     }
 }
 
 // Heapify down
 void priorityQueue::heapifyDown(Node* node) {                                                  
-    int left = 2 * index + 1, right = 2 * index + 2, smallest = index;
-    if (left < currentLength && arr[left] > arr[index]) {
-        smallest = left;
-    }
-    if (right < currentLength && arr[right] > arr[smallest]) {
-        smallest = right;
-    }
-    if (smallest != index) {
-        swap(arr[index], arr[smallest]);
-        heapifyDown(smallest);
-    }
+
 }
 
 // Constructor
-priorityQueue::priorityQueue() : currentLength(0), front(nullptr), rear(nullptr) {}
+priorityQueue::priorityQueue() : currentLength(0), currentLevel(-1), front(nullptr), rear(nullptr) {}
 
 // Pushing to priorityQueue
 void priorityQueue::push(int data) {                     
@@ -47,19 +68,12 @@ void priorityQueue::push(int data) {
     
     if (empty()) {
         front = rear = newNode;
+        ++currentLevel;
     } else {
-
-        if (!front->left) {
-            front->left = newNode;
-            newNode->prev = rear;
-            rear = newNode;
-        } else if (!front->right) {
-            front->right = newNode;
-            newNode->prev = rear->prev;
-            rear = newNode;
-        } else {
-
-        }
+        int level = 0;
+        bool addedElement = false;  // Initialize the flag
+        upgradeCurrentLevel(currentLevel, currentLength);
+        searchByPreOrder(front, newNode, addedElement, level);
         heapifyUp(rear);
     }
     ++currentLength;
