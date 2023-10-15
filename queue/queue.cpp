@@ -11,7 +11,7 @@ Node::Node(int data) : data(data), left(nullptr), right(nullptr), prev(nullptr) 
 
 // Check current level
 void priorityQueue::upgradeCurrentLevel(int& currentLevel, int& currentLength) {                                                  
-    if (currentLength == (2 ^ currentLevel) - 2) ++currentLevel;
+    if (currentLength == ((2 ^ (currentLevel+1)) - 1)) ++currentLevel;
 }
 
 
